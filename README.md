@@ -1,4 +1,4 @@
-# Authentication System
+# Authentication System 🔐
 
 A Node.js-based authentication system with various features including login with Google OAuth, password reset with Gmail, and human verification using Google's reCAPTCHA v2.
 
