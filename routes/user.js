@@ -11,9 +11,10 @@ router.post('/login',signIn);
 // Reset Password page routes
 router.get('/forgetPassword',showResetPage);
 router.post('/forgetPassword',resetPassword);
+// Reset Password page routes from mail
 router.get('/forgetPassword/:id/:token',verifyUser);
 router.post('/forgetPassword/:id/:token',reVerifyUser);
 
-
+// exporting routes 
 module.exports = router;
 
