@@ -1,11 +1,11 @@
 //Import required Libraries
 require('dotenv').config();
 const express = require('express');
+const app = express();
+const routReg = require('./routes/user');
 const session = require('express-session');
 const passport = require('passport')
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-const app = express();
-const routReg = require('./routes/user');
 
 //Assign Port to listen
 const port = process.env.PORT;
