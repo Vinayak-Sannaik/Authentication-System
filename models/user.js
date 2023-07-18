@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+// create new schema to store user sign in details
 const userSchema = new mongoose.Schema(
   {
     name : {
