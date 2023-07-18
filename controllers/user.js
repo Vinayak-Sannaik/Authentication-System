@@ -1,3 +1,4 @@
+// require all dependences
 require('dotenv').config();
 const userModel = require('../models/user');
 const bcrypt = require("bcrypt");
@@ -8,7 +9,6 @@ const nodemailer = require('nodemailer');
 const showRejPage = (req, res) => {
   res.render('register');
 }
-
 const showLogPage = (req, res) => {
   res.render('login')
 }
@@ -16,60 +16,49 @@ const showLogPage = (req, res) => {
 const submitForm = async (req, res) => {
   // Process the form data and perform any necessary actions
   // Existing user Check
-
   try {
     const { name, email, password } = req.body;
-
     const existingUser = await userModel.findOne({ email: email });
     if (existingUser) {
       return res.status(400).json({ message: "User already exists 1" });
     }
     // Hashed Password
     const hashedPassword = await bcrypt.hash(password, 10);
-
     // User Creation
     const result = await userModel.create({
       email: email,
       password: hashedPassword,
       name: name
     });
-
     // Token Generation
     const token = jwt.sign({ email: result.email, id: result._id }, SECRETE_KEYWORD);
     // res.status(201).json({user : result,token : token});
     res.redirect('login');
-
   } catch (error) {
-    console.log(error);
+    res.send(error);
   }
 }
 
+//Logic for user sign in
 const signIn = async (req, res) => {
-
   try {
     const { email, password } = req.body
-
     const existingUser = await userModel.findOne({ email: email });
     if (!existingUser) {
       return res.status(400).json({ message: "User not found" });
     }
-
     const matchPassword = await bcrypt.compare(password, existingUser.password);
-
     if (!matchPassword) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
-
     const token = jwt.sign({ email: existingUser.email, id: existingUser._id }, SECRETE_KEYWORD);
-    // res.status(201).json({user : existingUser,token : token});
     res.render('home');
-
   } catch (error) {
     console.log(error);
   }
 }
 
-// forgot password reset link sending
+// rendering forgot password reset link page
 const showResetPage = async (req, res) => {
   try {
     res.render('forgetPassword');
@@ -78,10 +67,10 @@ const showResetPage = async (req, res) => {
   }
 }
 
+//logic to catch forget password
 const resetPassword = async (req, res) => {
   try {
     const { email } = req.body
-
     const oldExistingUser = await userModel.findOne({ email: email });
     if (!oldExistingUser) {
       return res.status(400).json({ message: "User not found" });
@@ -91,12 +80,8 @@ const resetPassword = async (req, res) => {
     const token = jwt.sign({ email: oldExistingUser, id: oldExistingUser._id }, secret, {
       expiresIn: "5m",
     });
-
     const link = `http://localhost:3000/forgetPassword/${oldExistingUser._id}/${token}`;
-    // console.log(link);
-    // res.redirect('forgetPassword');
-
-
+ 
     // sending mail to user with reset password link using nodemailer
     const transporter = nodemailer.createTransport({
       service: 'gmail',
@@ -159,7 +144,6 @@ const resetPassword = async (req, res) => {
 
 const verifyUser = async (req, res) => {
   const { id, token } = req.params;
-  // console.log(req.params);
   const oldUser = await userModel.findOne({ _id: id });
   if (!oldUser) {
     return res.json({ status: "User not found" });
@@ -167,9 +151,6 @@ const verifyUser = async (req, res) => {
   const secret = SECRETE_KEYWORD + oldUser.password;
   try {
     const verify = jwt.verify(token, secret);
-    //  res.send("Verified");
-    //  console.log({email:verify.email})
-    //  console.log(verify.email);
     res.render("resetPassword", { email: verify.email });
   } catch (error) {
     console.log(error)
@@ -205,7 +186,7 @@ const reVerifyUser = async (req, res) => {
   }
 }
 
-
+// exporting all fuctions
 module.exports = {
   submitForm,
   showRejPage,
