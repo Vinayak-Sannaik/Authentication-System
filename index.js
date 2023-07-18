@@ -1,30 +1,26 @@
 //Import required Libraries
 require('dotenv').config();
 const express = require('express');
-const app = express();
-const routReg = require('./routes/user');
-
 const session = require('express-session');
 const passport = require('passport')
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-
+const app = express();
+const routReg = require('./routes/user');
 
 //Assign Port to listen
 const port = process.env.PORT;
-
-
 app.use(express.json());
 app.use(express.urlencoded({ extended : false }));
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 
-// Connection
+// Connection to mongodb through mongoose
 const{connectMongoDb} = require('./connection')
 connectMongoDb("mongodb://127.0.0.1:27017/authProject").then(()=>{
   console.log(" Mongodb Connected !")
 })
 
-// Oauth Logic
+// Google Oauth Logic
 app.use(session({
   secret: process.env.SECRET_KEY,
   resave: false,
@@ -58,15 +54,12 @@ app.get('/auth/google',
 app.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: 'failed' }),
   function (req, res) {
-    // res.send('You Successfully log-in Using Google');
     res.render('home');
   }
 );
 
 app.get('/home', (req, res) => {res.render('home');});
 app.get('/register', (req, res) => {res.render('register');});
-
-
 app.use('/', routReg);
 app.use('/login',routReg);
 app.use('/forgetPassword',routReg);
