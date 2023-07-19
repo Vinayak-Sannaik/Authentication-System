@@ -16,7 +16,7 @@ app.set('views', __dirname + '/views');
 
 // Connection to mongodb through mongoose
 const{connectMongoDb} = require('./connection')
-connectMongoDb("mongodb://127.0.0.1:27017/authProject").then(()=>{
+connectMongoDb("mongodb+srv://vinayakpsannaik:aBQtWgRKxh4C7Xmv@cluster0.ahwe9q0.mongodb.net/").then(()=>{
   console.log(" Mongodb Connected !")
 })
 
