@@ -20,6 +20,7 @@ A Node.js-based authentication system with various features including login with
 2. Use the provided login options to log in or click on the "Forgot Password" link to reset your password.
 
 See sample Project Output samples 📷 !!
+or Check out Live : https://auth-system-vs26.onrender.com
 
 ![image](https://github.com/Vinayak-Sannaik/Authentication-System/assets/112576218/a2a61e2d-323f-4bf0-b7af-dbd562426434)
 
