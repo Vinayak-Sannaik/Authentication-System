@@ -20,7 +20,7 @@ const submitForm = async (req, res) => {
     const { name, email, password } = req.body;
     const existingUser = await userModel.findOne({ email: email });
     if (existingUser) {
-      return res.status(400).json({ message: "User already exists 1" });
+      return res.status(400).json({ " User already exists " });
     }
     // Hashed Password
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -73,7 +73,7 @@ const resetPassword = async (req, res) => {
     const { email } = req.body
     const oldExistingUser = await userModel.findOne({ email: email });
     if (!oldExistingUser) {
-      return res.status(400).json({ message: "User not found" });
+      return res.status(400).json({ "User not found" });
     }
     // create secret token using jwt + user password
     const secret = SECRETE_KEYWORD + oldExistingUser.password;
@@ -112,8 +112,10 @@ const resetPassword = async (req, res) => {
         <script>
           alert('Check Your Mail box!!');
         </script>
-        <style>   
-         
+        <style>
+        body{
+          margin-top: 20%;
+        }
         a {
           text-decoration: none;
           color: #ffffff;
@@ -178,8 +180,16 @@ const reVerifyUser = async (req, res) => {
           password: encryptedPassword,
         },
       });
-    res.json({ status: "Password Updated" })
-    
+    res.send(`
+    <html>
+      <head>
+        <script>
+          alert('Password updated successfully !!');
+        </script>
+        <style>
+         </head>
+    </html>
+     
   } catch (error) {
     console.log(error)
     res.json({ status: "something went wrong" });
