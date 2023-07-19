@@ -4,7 +4,7 @@ const router = express.Router();
 
 // Registration page routes
 router.get('/', showRejPage);
-router.post('/register', submitForm);
+router.post('/', submitForm);
 // Login page routes
 router.get('/login', showLogPage);
 router.post('/login',signIn);
