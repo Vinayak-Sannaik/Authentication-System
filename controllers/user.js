@@ -93,7 +93,7 @@ const resetPassword = async (req, res) => {
 
     const mailOptions = {
       from: process.env.USER,
-      to: 'vinayaksannaik@gmail.com',
+      to: email,
       subject: 'Password Reset',
       text: link,
     };
